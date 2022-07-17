@@ -33,5 +33,7 @@ build/
 .vscode/
 
 ### logs ###
-.logs/
+logs/
+
+### db file ###
 src/main/resources/db/task-db.mv.db
