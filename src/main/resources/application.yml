@@ -1,0 +1,4 @@
+spring.profiles.active: local
+server.error.include-message: always
+logging.file.name: ./logs/Ud_todo-app.log
+task.template.allowMultipleTasksFromTemplate: false
