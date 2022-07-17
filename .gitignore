@@ -34,4 +34,4 @@ build/
 
 ### logs ###
 .logs/
-task-db.mv.db
+src/main/resources/db/task-db.mv.db
