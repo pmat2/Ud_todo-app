@@ -18,7 +18,8 @@ public class Project {
     @OneToMany(mappedBy = "project")
     private Set<TaskGroup> taskGroups;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany( cascade = CascadeType.ALL,
+                mappedBy = "project")
     private Set<ProjectStep> projectSteps;
 
     public Project() {

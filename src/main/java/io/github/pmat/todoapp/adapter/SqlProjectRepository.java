@@ -12,5 +12,4 @@ public interface SqlProjectRepository extends ProjectRepository, JpaRepository<P
     @Override
     @Query("from Project p join fetch p.taskGroups")
     List<Project> findAll();
-
 }
