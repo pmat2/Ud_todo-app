@@ -17,9 +17,6 @@ public class TaskGroup {
 
     private Boolean done = Boolean.FALSE;
 
-    @Embedded
-    private Audit audit = new Audit();
-
     @OneToMany( fetch = FetchType.LAZY,
                 cascade = CascadeType.ALL,
                 mappedBy = "group")
