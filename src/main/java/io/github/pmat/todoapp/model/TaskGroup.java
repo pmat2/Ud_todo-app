@@ -20,7 +20,11 @@ public class TaskGroup {
     @OneToMany( fetch = FetchType.LAZY,
                 cascade = CascadeType.ALL,
                 mappedBy = "group")
-    private Set<Task> taskList;
+    private Set<Task> tasks;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public TaskGroup() {
     }
@@ -50,11 +54,28 @@ public class TaskGroup {
     }
 
     public Set<Task> getTaskList() {
-        return taskList;
+        return tasks;
     }
 
-    public void setTaskList(Set<Task> taskList) {
-        this.taskList = taskList;
+    public void setTaskList(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+
+    public Set<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
     @Override

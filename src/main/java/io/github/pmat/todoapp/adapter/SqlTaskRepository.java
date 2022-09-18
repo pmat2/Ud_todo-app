@@ -1,6 +1,7 @@
-package io.github.pmat.todoapp.repository;
+package io.github.pmat.todoapp.adapter;
 
 import io.github.pmat.todoapp.model.Task;
+import io.github.pmat.todoapp.repository.TaskRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
