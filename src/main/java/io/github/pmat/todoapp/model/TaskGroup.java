@@ -2,31 +2,30 @@ package io.github.pmat.todoapp.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
-@Table(name = "tasks")
-public class Task {
+@Table(name = "task_groups")
+public class TaskGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "Task description must not be empty")
+    @NotBlank(message = "Task group's must not be empty")
     private String description;
 
     private Boolean done = Boolean.FALSE;
 
-    private LocalDateTime deadline;
-
     @Embedded
     private Audit audit = new Audit();
 
-    @ManyToOne
-    @JoinColumn(name = "task_group_id")
-    private TaskGroup group;
+    @OneToMany( fetch = FetchType.LAZY,
+                cascade = CascadeType.ALL,
+                mappedBy = "group")
+    private Set<Task> taskList;
 
-    public Task() {
+    public TaskGroup() {
     }
 
     public Integer getId() {
@@ -53,27 +52,12 @@ public class Task {
         this.done = completed;
     }
 
-    public LocalDateTime getDeadline() {
-        return deadline;
+    public Set<Task> getTaskList() {
+        return taskList;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
-        this.deadline = deadline;
-    }
-
-    public void updateTask(Task source){
-        description = source.description;
-        done = source.done;
-        deadline = source.deadline;
-        group = source.group;
-    }
-
-    public TaskGroup getGroup() {
-        return group;
-    }
-
-    public void setGroup(TaskGroup group) {
-        this.group = group;
+    public void setTaskList(Set<Task> taskList) {
+        this.taskList = taskList;
     }
 
     @Override
