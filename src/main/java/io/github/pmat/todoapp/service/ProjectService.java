@@ -26,17 +26,17 @@ public class ProjectService {
         this.configurationProperties = configurationProperties;
     }
 
-    public List<Project> readAll(){
+    public List<Project> readAll() {
         return repository.findAll();
     }
 
-    public Project save(Project toSave){
+    public Project save(Project toSave) {
         return repository.save(toSave);
     }
 
-    public GroupReadModel createGroup(LocalDateTime deadline, int projectId){
-        if(!configurationProperties.isAllowMultipleTasksFromTemplate()
-                && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)){
+    public GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
+        if (!configurationProperties.isAllowMultipleTasksFromTemplate()
+                && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)) {
             throw new IllegalStateException("Only one from project is allowed");
         }
         TaskGroup result = repository.findById(projectId)
@@ -45,13 +45,14 @@ public class ProjectService {
                     targetGroup.setDescription(project.getDescription());
                     targetGroup.setTasks(
                             project.getProjectSteps().stream()
-                                .map(step -> new Task(
-                                        step.getDescription(),
-                                        deadline.plusDays(step.getDaysToDeadline())))
-                                .collect(Collectors.toSet())
-            );
-            return targetGroup;
-        }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
+                                    .map(step -> new Task(
+                                            step.getDescription(),
+                                            deadline.plusDays(step.getDaysToDeadline())))
+                                    .collect(Collectors.toSet())
+                    );
+                    targetGroup.setProject(project);
+                    return taskGroupRepository.save(targetGroup);
+                }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
         return new GroupReadModel(result);
     }
 }

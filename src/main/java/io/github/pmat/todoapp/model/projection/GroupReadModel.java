@@ -9,9 +9,6 @@ import java.util.stream.Collectors;
 
 public class GroupReadModel {
     private String description;
-    /*
-    * Deadline from the latest task in group
-    */
     private LocalDateTime deadline;
     private Set<TaskReadModel> tasks;
 
@@ -25,7 +22,6 @@ public class GroupReadModel {
                 .map(TaskReadModel::new)
                 .collect(Collectors.toSet());
     }
-
 
     public String getDescription() {
         return description;
