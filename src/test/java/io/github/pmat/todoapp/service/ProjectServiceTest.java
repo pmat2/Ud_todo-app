@@ -20,12 +20,8 @@ class ProjectServiceTest {
     @Test
     @DisplayName("should throw IllegalStateException when configured to allow just 1 group and undone group exists")
     void createGroup_noAllowMultipleTasks_And_notExistsByDoneIsFalseAndProjectID() {
-        var mockGroupRepository = mock(TaskGroupRepository.class);
-        when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(true);
-
-        var mockConfig = mock(TaskConfigurationProperties.class);
-        when(mockConfig.isAllowMultipleTasksFromTemplate()).thenReturn(false);
-
+        TaskGroupRepository mockGroupRepository = groupRepositoryReturning(true);
+        TaskConfigurationProperties mockConfig = configMultipleTasksReturning(false);
         var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
 
         assertThatIllegalStateException()
@@ -38,8 +34,7 @@ class ProjectServiceTest {
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-        var mockConfig = mock(TaskConfigurationProperties.class);
-        when(mockConfig.isAllowMultipleTasksFromTemplate()).thenReturn(true);
+        TaskConfigurationProperties mockConfig = configMultipleTasksReturning(true);
 
         var toTest = new ProjectService(mockRepository, null, mockConfig);
 
@@ -49,4 +44,38 @@ class ProjectServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("given id not found");
     }
+
+    @Test
+    @DisplayName("should throw IAE when configured to allow just one group and no groups and projects for given id")
+    void createGroup_noAllowMultipleTasks_And_noUndoneGroupExists_throwsIAE(){
+        var mockRepository = mock(ProjectRepository.class);
+        when(mockRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+        TaskConfigurationProperties mockConfig = configMultipleTasksReturning(false);
+        TaskGroupRepository groupRepository = groupRepositoryReturning(false);
+
+        var toTest = new ProjectService(mockRepository, groupRepository, mockConfig);
+
+        var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
+
+        assertThat(exception)
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("id not found");
+    }
+
+    private TaskConfigurationProperties configMultipleTasksReturning(final boolean result){
+        var mockConfig = mock(TaskConfigurationProperties.class);
+        when(mockConfig.isAllowMultipleTasksFromTemplate()).thenReturn(result);
+
+        return mockConfig;
+    }
+
+    private TaskGroupRepository groupRepositoryReturning(final boolean result){
+        var mockGroupRepository = mock(TaskGroupRepository.class);
+        when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(result);
+
+        return mockGroupRepository;
+    }
+
+
 }
