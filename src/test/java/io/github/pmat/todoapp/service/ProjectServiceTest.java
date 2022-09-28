@@ -77,6 +77,7 @@ class ProjectServiceTest {
         when(mockRepository.findById(anyInt()))
                 .thenReturn(Optional.of(project));
         InMemoryGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
+        int count = inMemoryGroupRepo.count();
         TaskConfigurationProperties mockConfig = configMultipleTasksReturning(true);
 
         var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig);
@@ -85,6 +86,7 @@ class ProjectServiceTest {
         assertThat(result.getDescription()).isEqualTo("bar");
         assertThat(result.getDeadline()).isEqualTo(today.minusDays(1));
         assertThat(result.getTasks()).allMatch(task -> task.getDescription().equals("foo"));
+        assertThat(count + 1).isEqualTo(inMemoryGroupRepo.count());
     }
 
     private TaskConfigurationProperties configMultipleTasksReturning(final boolean result) {
@@ -121,6 +123,11 @@ class ProjectServiceTest {
 
     private static class InMemoryGroupRepository implements TaskGroupRepository {
         private Map<Integer, TaskGroup> map = new HashMap<>();
+        int index = 0;
+
+        public int count(){
+            return map.size();
+        }
 
         @Override
         public List<TaskGroup> findAll() {
@@ -134,6 +141,7 @@ class ProjectServiceTest {
 
         @Override
         public TaskGroup save(TaskGroup entity) {
+            entity.setId(++index);
             map.put(entity.getId(), entity);
             return entity;
         }
