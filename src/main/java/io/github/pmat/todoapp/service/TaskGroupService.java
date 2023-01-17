@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
+//@Service
 public class TaskGroupService {
     private TaskGroupRepository taskGroupRepository;
     private TaskRepository taskRepository;
 
-    public TaskGroupService(TaskGroupRepository repository, TaskRepository taskRepository, TaskConfigurationProperties config) {
+    public TaskGroupService(TaskGroupRepository repository, TaskRepository taskRepository) {
         this.taskGroupRepository = repository;
         this.taskRepository = taskRepository;
     }
