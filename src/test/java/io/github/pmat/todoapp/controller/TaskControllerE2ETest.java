@@ -8,15 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@ActiveProfiles("integration")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TaskControllerE2ETest {
 
@@ -32,11 +28,16 @@ class TaskControllerE2ETest {
     @Test
     @DisplayName("when GET all tasks SHOULD return all tasks")
     void httpGetReturnsAllTasks(){
+        // given
+        int initialSize = repository.findAll().size();
         repository.save(new Task("foo", LocalDateTime.now()));
         repository.save(new Task("bar", LocalDateTime.now()));
         repository.save(new Task("coo", LocalDateTime.now()));
 
+        // when
         Task[] tasks = restTemplate.getForObject("http://localhost:" + port + "/task", Task[].class);
-        assertThat(tasks).hasSize(3);
+
+        // then
+        assertThat(tasks).hasSize(initialSize + 3);
     }
 }
