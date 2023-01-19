@@ -5,10 +5,12 @@ import io.github.pmat.todoapp.repository.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -42,6 +44,13 @@ public class TaskController {
                 .findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/search/done")
+    public ResponseEntity<List<Task>> getDoneTasks(@RequestParam(defaultValue = "true") boolean state){
+        logger.info("getDoneTasks invoked for state = {}", state);
+        return ResponseEntity.ok(taskRepository
+                .findByDone(state));
     }
 
     @PostMapping
