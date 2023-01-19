@@ -26,7 +26,7 @@ class TaskControllerE2ETest {
     private TaskRepository repository;
 
     @Test
-    @DisplayName("when GET all tasks SHOULD return all tasks")
+    @DisplayName("WHEN GET all tasks SHOULD return all tasks")
     void httpGetReturnsAllTasks(){
         // given
         int initialSize = repository.findAll().size();
