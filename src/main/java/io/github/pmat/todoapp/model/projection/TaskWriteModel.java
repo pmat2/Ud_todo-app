@@ -1,6 +1,7 @@
 package io.github.pmat.todoapp.model.projection;
 
 import io.github.pmat.todoapp.model.Task;
+import io.github.pmat.todoapp.model.TaskGroup;
 
 import java.time.LocalDateTime;
 
@@ -24,10 +25,7 @@ public class TaskWriteModel {
         this.deadline = deadline;
     }
 
-    public Task toTask(){
-        Task result = new Task();
-        result.setDescription(description);
-        result.setDeadline(deadline);
-        return result;
+    public Task toTask(TaskGroup group) {
+        return new Task(description, deadline, group);
     }
 }

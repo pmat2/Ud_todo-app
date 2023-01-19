@@ -27,7 +27,7 @@ class ProjectServiceTest {
     void createGroup_noAllowMultipleTasks_And_notExistsByDoneIsFalseAndProjectID() {
         TaskGroupRepository mockGroupRepository = groupRepositoryReturning(true);
         TaskConfigurationProperties mockConfig = configMultipleTasksReturning(false);
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(null, mockGroupRepository, mockConfig, null);
 
         assertThatIllegalStateException()
                 .isThrownBy(() -> toTest.createGroup(LocalDateTime.now(), 0));
@@ -41,7 +41,7 @@ class ProjectServiceTest {
 
         TaskConfigurationProperties mockConfig = configMultipleTasksReturning(true);
 
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, mockConfig, null);
 
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
 
@@ -59,7 +59,7 @@ class ProjectServiceTest {
         TaskConfigurationProperties mockConfig = configMultipleTasksReturning(false);
         TaskGroupRepository groupRepository = groupRepositoryReturning(false);
 
-        var toTest = new ProjectService(mockRepository, groupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, groupRepository, mockConfig, null);
 
         var exception = catchThrowable(() -> toTest.createGroup(LocalDateTime.now(), 0));
 
@@ -77,16 +77,21 @@ class ProjectServiceTest {
         when(mockRepository.findById(anyInt()))
                 .thenReturn(Optional.of(project));
         InMemoryGroupRepository inMemoryGroupRepo = inMemoryGroupRepository();
+        var serviceWithInMemRepo = dummyGroupService(inMemoryGroupRepo);
         int count = inMemoryGroupRepo.count();
         TaskConfigurationProperties mockConfig = configMultipleTasksReturning(true);
 
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepo, mockConfig, serviceWithInMemRepo);
         GroupReadModel result = toTest.createGroup(today, 1);
 
         assertThat(result.getDescription()).isEqualTo("bar");
         assertThat(result.getDeadline()).isEqualTo(today.minusDays(1));
         assertThat(result.getTasks()).allMatch(task -> task.getDescription().equals("foo"));
         assertThat(count + 1).isEqualTo(inMemoryGroupRepo.count());
+    }
+
+    private TaskGroupService dummyGroupService(InMemoryGroupRepository inMemoryGroupRepo) {
+        return new TaskGroupService(inMemoryGroupRepo, null);
     }
 
     private TaskConfigurationProperties configMultipleTasksReturning(final boolean result) {

@@ -30,8 +30,15 @@ public class Task {
     }
 
     public Task(String description, LocalDateTime deadline) {
+        this(description, deadline, null);
+    }
+
+    public Task(String description, LocalDateTime deadline, TaskGroup taskGroup) {
         this.description = description;
         this.deadline = deadline;
+        if (taskGroup != null) {
+            this.group = taskGroup;
+        }
     }
 
     public Integer getId() {
@@ -66,7 +73,7 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public void updateTask(Task source){
+    public void updateTask(Task source) {
         description = source.description;
         done = source.done;
         deadline = source.deadline;
