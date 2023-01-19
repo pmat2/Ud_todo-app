@@ -1,9 +1,9 @@
-## Spring todo app
+# Spring todo app
 
-# Requirements:
+## Requirements:
 - java11
 
-# Current modules:
+## Current modules:
 - spring boot
 - h2
 - jpa
