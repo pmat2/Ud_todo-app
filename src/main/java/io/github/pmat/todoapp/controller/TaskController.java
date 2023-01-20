@@ -5,12 +5,10 @@ import io.github.pmat.todoapp.repository.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -27,19 +25,19 @@ public class TaskController {
 
     @GetMapping(params = {"!sort", "!page", "!size"})
     public ResponseEntity<?> readAllTasks(){
-        logger.info("readAllTasks() invoked, returning all tasks");
+        logger.info("[readAllTasks] invoked, returning all tasks");
         return ResponseEntity.ok(taskRepository.findAll());
     }
 
     @GetMapping
     public ResponseEntity<List<Task>> readAllTasks(Pageable page){
-        logger.info("readAllTasks() invoked, returning all tasks");
+        logger.info("[readAllTasks] invoked, returning all tasks");
         return ResponseEntity.ok(taskRepository.findAll(page).getContent());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTask(@PathVariable Integer id){
-        logger.info("getTask({}) invoked, returning task id: {}", id, id);
+        logger.info("[getTask] invoked, returning task id: {}", id);
         return taskRepository
                 .findById(id)
                 .map(ResponseEntity::ok)
@@ -48,14 +46,14 @@ public class TaskController {
 
     @GetMapping("/search/done")
     public ResponseEntity<List<Task>> getDoneTasks(@RequestParam(defaultValue = "true") boolean state){
-        logger.info("getDoneTasks invoked for state = {}", state);
+        logger.info("[getDoneTasks] invoked for state = {}", state);
         return ResponseEntity.ok(taskRepository
                 .findByDone(state));
     }
 
     @PostMapping
     public ResponseEntity<Task> postTask(@RequestBody @Valid Task task){
-        logger.info("postTask() invoked, adding new task: {}", task.toString());
+        logger.info("[postTask] invoked, adding new task: {}", task.toString());
         taskRepository.save(task);
         return ResponseEntity.ok(task);
     }
@@ -64,12 +62,12 @@ public class TaskController {
     @PatchMapping("/toggle/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable Integer id){
         if(!taskRepository.existsById(id)){
-            logger.error("toggleTask() invoked, for id: {}, task with that id not found in database", id);
+            logger.error("[toggleTask] invoked, for id: {}, task with that id not found in database", id);
             return ResponseEntity.notFound().build();
         }
         taskRepository.findById(id)
                 .ifPresent(task -> task.setDone(!task.getDone()));
-        logger.info("updateTask() invoked for id: {}, toggled done to: {}", id, taskRepository.findById(id).orElse(null).getDone());
+        logger.info("[updateTask] invoked for id: {}, toggled done to: {}", id, taskRepository.findById(id).orElse(null).getDone());
         return ResponseEntity.noContent().build();
     }
 
@@ -78,12 +76,12 @@ public class TaskController {
     public ResponseEntity<?> updateTask(@PathVariable Integer id, @RequestBody @Valid Task target){
         logger.info("updateTask({}) invoked, updating task id: {}", id, id);
         if(!taskRepository.existsById(id)){
-            logger.error("updateTask() invoked, for id: {}, task with that id not found in database", id);
+            logger.error("[updateTask] invoked, for id: {}, task with that id not found in database", id);
             return ResponseEntity.notFound().build();
         }
         taskRepository.findById(id)
                         .ifPresent(task -> task.updateTask(target));
-        logger.info("updateTask() invoked for id: {}, updated task to: {}", id, target);
+        logger.info("pupdateTask] invoked for id: {}, updated task to: {}", id, target);
         return ResponseEntity.noContent().build();
     }
 
@@ -91,10 +89,10 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Task> deleteTask(@PathVariable Integer id){
         if(!taskRepository.existsById(id)){
-            logger.info("deleteTask({}) invoked, failed to find task with id: {}", id, id);
+            logger.info("pdeleteTask] invoked, failed to find task with id: {}", id);
             return ResponseEntity.notFound().build();
         }
-        logger.info("deleteTask({}) invoked, deleting task with id: {}", id, id);
+        logger.info("[deleteTask] invoked, deleting task with id: {}", id);
         taskRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
