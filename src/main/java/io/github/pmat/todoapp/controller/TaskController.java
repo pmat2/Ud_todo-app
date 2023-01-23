@@ -2,6 +2,7 @@ package io.github.pmat.todoapp.controller;
 
 import io.github.pmat.todoapp.model.Task;
 import io.github.pmat.todoapp.repository.TaskRepository;
+import io.github.pmat.todoapp.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/task")
@@ -18,15 +20,17 @@ public class TaskController {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    public TaskController(TaskRepository taskRepository) {
+    public TaskController(TaskRepository taskRepository, TaskService taskService) {
         this.taskRepository = taskRepository;
+        this.taskService = taskService;
     }
 
     @GetMapping(params = {"!sort", "!page", "!size"})
-    public ResponseEntity<?> readAllTasks(){
+    public CompletableFuture<ResponseEntity<List<Task>>> readAllTasks(){
         logger.info("[readAllTasks] invoked, returning all tasks");
-        return ResponseEntity.ok(taskRepository.findAll());
+        return taskService.findAllAsync().thenApply(ResponseEntity::ok);
     }
 
     @GetMapping
