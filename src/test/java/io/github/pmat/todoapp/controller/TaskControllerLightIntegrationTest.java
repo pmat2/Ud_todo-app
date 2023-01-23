@@ -2,6 +2,7 @@ package io.github.pmat.todoapp.controller;
 
 import io.github.pmat.todoapp.model.Task;
 import io.github.pmat.todoapp.repository.TaskRepository;
+import io.github.pmat.todoapp.service.TaskService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class TaskControllerLightIntegrationTest {
 
     @MockBean
     private TaskRepository repository;
+
+    @MockBean
+    private TaskService service;
 
     @Test
     @DisplayName("GIVEN test task saved WHEN GET added task THEN should return result code 2xx AND contains test task description")
