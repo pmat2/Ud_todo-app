@@ -8,7 +8,7 @@ public class TaskReadModel {
 
     public TaskReadModel(Task source) {
         description = source.getDescription();
-        done = source.getDone();
+        done = source.isDone();
     }
 
     public String getDescription() {

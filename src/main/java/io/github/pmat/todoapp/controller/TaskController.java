@@ -27,15 +27,19 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+//    @GetMapping(params = {"!sort", "!page", "!size"})
+//    public CompletableFuture<ResponseEntity<List<Task>>> readAllTasks(){
+//        logger.info("[readAllTasks] invoked, returning all tasks");
+//        return taskService.findAllAsync().thenApply(ResponseEntity::ok);
+//    }
     @GetMapping(params = {"!sort", "!page", "!size"})
-    public CompletableFuture<ResponseEntity<List<Task>>> readAllTasks(){
-        logger.info("[readAllTasks] invoked, returning all tasks");
-        return taskService.findAllAsync().thenApply(ResponseEntity::ok);
+    public ResponseEntity<List<Task>> readAllTasks(){
+        return ResponseEntity.ok(taskRepository.findAll());
     }
 
     @GetMapping
     public ResponseEntity<List<Task>> readAllTasks(Pageable page){
-        logger.info("[readAllTasks] invoked, returning all tasks");
+        logger.info("[readAllTasks] invoked, returning all tasks with pagination");
         return ResponseEntity.ok(taskRepository.findAll(page).getContent());
     }
 
@@ -70,8 +74,8 @@ public class TaskController {
             return ResponseEntity.notFound().build();
         }
         taskRepository.findById(id)
-                .ifPresent(task -> task.setDone(!task.getDone()));
-        logger.info("[updateTask] invoked for id: {}, toggled done to: {}", id, taskRepository.findById(id).orElse(null).getDone());
+                .ifPresent(task -> task.setDone(!task.isDone()));
+        logger.info("[updateTask] invoked for id: {}, toggled done to: {}", id, taskRepository.findById(id).orElse(null).isDone());
         return ResponseEntity.noContent().build();
     }
 
@@ -84,7 +88,7 @@ public class TaskController {
             return ResponseEntity.notFound().build();
         }
         taskRepository.findById(id)
-                        .ifPresent(task -> task.updateTask(target));
+                        .ifPresent(task -> task.updateFrom(target));
         logger.info("pupdateTask] invoked for id: {}, updated task to: {}", id, target);
         return ResponseEntity.noContent().build();
     }

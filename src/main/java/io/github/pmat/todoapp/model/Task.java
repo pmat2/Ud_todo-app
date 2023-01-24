@@ -1,51 +1,52 @@
 package io.github.pmat.todoapp.model;
 
-import javax.persistence.*;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
 public class Task {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @NotBlank(message = "Task description must not be empty")
+    private int id;
+    @NotBlank(message = "Task's description must not be empty")
     private String description;
-
-    private Boolean done = Boolean.FALSE;
-
+    private boolean done;
     private LocalDateTime deadline;
-
     @Embedded
     private Audit audit = new Audit();
-
     @ManyToOne
     @JoinColumn(name = "task_group_id")
     private TaskGroup group;
 
-    public Task() {
+    Task() {
     }
 
     public Task(String description, LocalDateTime deadline) {
         this(description, deadline, null);
     }
 
-    public Task(String description, LocalDateTime deadline, TaskGroup taskGroup) {
+    public Task(String description, LocalDateTime deadline, TaskGroup group) {
         this.description = description;
         this.deadline = deadline;
-        if (taskGroup != null) {
-            this.group = taskGroup;
+        if (group != null) {
+            this.group = group;
         }
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    void setId(final int id) {
         this.id = id;
     }
 
@@ -53,47 +54,38 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String name) {
-        this.description = name;
+    void setDescription(final String description) {
+        this.description = description;
     }
 
-    public Boolean getDone() {
+    public boolean isDone() {
         return done;
     }
 
-    public void setDone(Boolean completed) {
-        this.done = completed;
+    public void setDone(final boolean done) {
+        this.done = done;
     }
 
     public LocalDateTime getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    void setDeadline(final LocalDateTime deadline) {
         this.deadline = deadline;
     }
 
-    public void updateTask(Task source) {
+    TaskGroup getGroup() {
+        return group;
+    }
+
+    void setGroup(final TaskGroup group) {
+        this.group = group;
+    }
+
+    public void updateFrom(final Task source) {
         description = source.description;
         done = source.done;
         deadline = source.deadline;
         group = source.group;
-    }
-
-    public TaskGroup getGroup() {
-        return group;
-    }
-
-    public void setGroup(TaskGroup group) {
-        this.group = group;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", completed=" + done +
-                '}';
     }
 }

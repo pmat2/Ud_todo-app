@@ -38,7 +38,8 @@ public class TaskGroupController {
     @PostMapping
     public ResponseEntity<GroupReadModel> createGroup(@RequestBody @Valid GroupWriteModel source){
         logger.info("[createGroup] - create group for: {}", source);
-        return ResponseEntity.created(URI.create("/")).body(service.createGroup(source));
+        GroupReadModel result = service.createGroup(source);
+        return ResponseEntity.created(URI.create("/" + result.getId())).body(result);
     }
 
     @Transactional
@@ -52,6 +53,6 @@ public class TaskGroupController {
     @GetMapping("/{id}/tasks")
     public ResponseEntity<List<Task>> getTasksFromGroup(@PathVariable Integer id){
         logger.info("[getTasksFromGroup] - for group id: {}", id);
-        return ResponseEntity.ok(repository.findByGroupId(id));
+        return ResponseEntity.ok(repository.findAllByGroupId(id));
     }
 }

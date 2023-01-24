@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Long> {
 
@@ -16,4 +18,7 @@ interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Long> {
 
     @Override
     boolean existsByDoneIsFalseAndGroupId(Integer groupId);
+
+    @Override
+    List<Task> findAllByGroupId(Integer groupId);
 }
