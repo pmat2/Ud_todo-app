@@ -1,0 +1,1 @@
+alter table task_groups alter column project_id int null;
