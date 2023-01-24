@@ -1,5 +1,6 @@
 package io.github.pmat.todoapp.service;
 
+import io.github.pmat.todoapp.model.Project;
 import io.github.pmat.todoapp.model.TaskGroup;
 import io.github.pmat.todoapp.model.projection.GroupReadModel;
 import io.github.pmat.todoapp.model.projection.GroupWriteModel;
@@ -20,7 +21,11 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source) {
-        TaskGroup result = taskGroupRepository.save(source.toGroup());
+        return createGroup(source, null);
+    }
+
+    public GroupReadModel createGroup(GroupWriteModel source, Project project) {
+        TaskGroup result = taskGroupRepository.save(source.toGroup(project));
         return new GroupReadModel(result);
     }
 

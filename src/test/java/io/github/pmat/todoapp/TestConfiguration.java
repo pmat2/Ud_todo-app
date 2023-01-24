@@ -13,6 +13,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Configuration
@@ -86,6 +87,11 @@ public class TestConfiguration {
 
             @Override
             public List<Task> findAllByGroupId(Integer groupId) {
+                return null;
+            }
+
+            @Override
+            public List<Task> findByDoneIsFalseAndDeadlineLessThanEqualOrDeadlineIsNull(LocalDateTime deadline) {
                 return null;
             }
         };

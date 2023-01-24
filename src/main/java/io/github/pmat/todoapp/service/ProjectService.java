@@ -41,7 +41,7 @@ public class ProjectService {
                 && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)) {
             throw new IllegalStateException("Only one from project is allowed");
         }
-        GroupReadModel result = repository.findById(projectId)
+        return repository.findById(projectId)
                 .map(project -> {
                     var targetGroup = new GroupWriteModel();
                     targetGroup.setDescription(project.getDescription());
@@ -55,8 +55,7 @@ public class ProjectService {
                                     })
                                     .collect(Collectors.toSet())
                     );
-                    return taskGroupService.createGroup(targetGroup);
+                    return taskGroupService.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
-        return result;
     }
 }

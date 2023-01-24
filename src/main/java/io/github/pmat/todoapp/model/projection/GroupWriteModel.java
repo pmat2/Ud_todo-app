@@ -1,5 +1,6 @@
 package io.github.pmat.todoapp.model.projection;
 
+import io.github.pmat.todoapp.model.Project;
 import io.github.pmat.todoapp.model.TaskGroup;
 
 import java.util.Set;
@@ -25,7 +26,7 @@ public class GroupWriteModel {
         this.tasks = tasks;
     }
 
-    public TaskGroup toGroup() {
+    public TaskGroup toGroup(Project project) {
         TaskGroup result = new TaskGroup();
         result.setDescription(decription);
         result.setTasks(
@@ -33,6 +34,7 @@ public class GroupWriteModel {
                         .map(source -> source.toTask(result))
                         .collect(Collectors.toSet())
         );
+        result.setProject(project);
         return result;
     }
 }
