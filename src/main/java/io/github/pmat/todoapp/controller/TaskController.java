@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -57,6 +58,12 @@ public class TaskController {
         logger.info("[getDoneTasks] invoked for state = {}", state);
         return ResponseEntity.ok(taskRepository
                 .findByDone(state));
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<List<Task>> getTasksDueToday(){
+        logger.info("[getTasksDueToday] - returning all tasks after deadline, deadline today, or no deadline");
+        return ResponseEntity.ok(taskRepository.findByDoneIsFalseAndDeadlineLessThanEqualOrDeadlineIsNull(LocalDateTime.now()));
     }
 
     @PostMapping
