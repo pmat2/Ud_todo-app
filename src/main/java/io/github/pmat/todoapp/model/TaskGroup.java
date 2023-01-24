@@ -21,43 +21,31 @@ public class TaskGroup {
 
     public TaskGroup() {
     }
-
-    public int getId() {
-        return id;
-    }
-
+    public int getId() { return id; }
     public void setId(final int id) {
         this.id = id;
     }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(final String description) {
         this.description = description;
     }
-
     public boolean isDone() {
         return done;
     }
-
     public void setDone(final boolean done) {
         this.done = done;
     }
-
     public Set<Task> getTasks() {
         return tasks;
     }
-
     public void setTasks(final Set<Task> tasks) {
         this.tasks = tasks;
     }
-
     public Project getProject() {
         return project;
     }
-
     public void setProject(final Project project) {
         this.project = project;
     }

@@ -24,43 +24,33 @@ public class ProjectStep {
 
     public ProjectStep() {
     }
-
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
     public Project getProjects() {
         return project;
     }
-
     public void setProjects(Project project) {
         this.project = project;
     }
-
     public int getDaysToDeadline() {
         return daysToDeadline;
     }
-
     public void setDaysToDeadline(int daysToDeadline) {
         this.daysToDeadline = daysToDeadline;
     }
-
     public Project getProject() {
         return project;
     }
-
     public void setProject(Project project) {
         this.project = project;
     }

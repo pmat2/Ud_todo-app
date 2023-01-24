@@ -16,7 +16,6 @@ public class Audit {
     public void  prePersist(){
         createdOn = LocalDateTime.now();
     }
-
     @PreUpdate
     public void preUpdate(){
         updatedOn = LocalDateTime.now();
