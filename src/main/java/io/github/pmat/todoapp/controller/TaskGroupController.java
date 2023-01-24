@@ -55,4 +55,16 @@ public class TaskGroupController {
         logger.info("[getTasksFromGroup] - for group id: {}", id);
         return ResponseEntity.ok(repository.findAllByGroupId(id));
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<String> handleIAE(IllegalArgumentException exception){
+        logger.info("[handleIAE] - caught IllegalArgumentException");
+        return ResponseEntity.notFound().build();
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<String> handleISE(IllegalStateException exception){
+        logger.info("[handleISE] - caught IllegalStateException");
+        return ResponseEntity.badRequest().body(exception.getMessage());
+    }
 }

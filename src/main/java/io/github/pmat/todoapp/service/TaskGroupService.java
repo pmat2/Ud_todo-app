@@ -31,11 +31,14 @@ public class TaskGroupService {
     }
 
     public void toggleGroup(int groupId) {
-        if (taskRepository.existsByDoneIsFalseAndGroupId(groupId)) {
+        TaskGroup result = taskGroupRepository.findById(groupId)
+                .orElseThrow(() ->new IllegalArgumentException("Task group with given ID not found"));
+
+        if (taskRepository.existsByDoneIsFalseAndGroupId(groupId)
+                && !result.isDone()) {
             throw new IllegalStateException("Group has undone tasks! Do all the tasks first");
         }
-        TaskGroup result = taskGroupRepository.findById(groupId)
-                .orElseThrow(() -> new IllegalArgumentException("Task group with given ID not found"));
+
         result.setDone(!result.isDone());
         taskGroupRepository.save(result);
     }
