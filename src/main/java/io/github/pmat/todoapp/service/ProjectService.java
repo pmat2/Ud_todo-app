@@ -4,6 +4,7 @@ import io.github.pmat.todoapp.config.TaskConfigurationProperties;
 import io.github.pmat.todoapp.model.Project;
 import io.github.pmat.todoapp.model.projection.GroupReadModel;
 import io.github.pmat.todoapp.model.projection.GroupWriteModel;
+import io.github.pmat.todoapp.model.projection.ProjectWriteModel;
 import io.github.pmat.todoapp.model.projection.TaskWriteModel;
 import io.github.pmat.todoapp.repository.ProjectRepository;
 import io.github.pmat.todoapp.repository.TaskGroupRepository;
@@ -32,8 +33,8 @@ public class ProjectService {
         return repository.findAll();
     }
 
-    public Project save(Project toSave) {
-        return repository.save(toSave);
+    public Project save(ProjectWriteModel toSave) {
+        return repository.save(toSave.toProject());
     }
 
     public GroupReadModel createGroup(LocalDateTime deadline, int projectId) {
