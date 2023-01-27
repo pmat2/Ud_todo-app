@@ -6,3 +6,7 @@ management:
   endpoints:
     web:
       base-path: /status
+
+spring:
+  resources:
+    add-mappings=true:
