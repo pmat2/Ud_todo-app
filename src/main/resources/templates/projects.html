@@ -9,7 +9,18 @@
 <body>
 <main>
     <!--/*thymesVar id="message" type="String"*/-->
-    <h3 th:if="${message != null}" th:text="${message}"></h3></br>
+    <h3 th:if="${message != null}" th:text="${message}"></h3>
+
+    <!--/*thymesVar id="projects" type="java.util.List<io.github.pmat.todoapp.model.Project>"*/-->
+    <dl th:each="project: ${projects}">
+        <dt th:text="${project.description}">...</dt>
+        <dd>
+            <ul>
+                <li th:each="step: ${project.projectSteps}" th:text="|${step.description} (${step.daysToDeadline} dni)|"></li>
+            </ul>
+        </dd>
+    </dl>
+
     <!--/*@thymesVar id="project" type="io.github.pmat.todoapp.model.projection.ProjectWriteModel"*/-->
     <form action="#" method="post" th:action="@{/projects}" th:object="${project}">
         <fieldset>

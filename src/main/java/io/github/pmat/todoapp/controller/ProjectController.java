@@ -1,5 +1,6 @@
 package io.github.pmat.todoapp.controller;
 
+import io.github.pmat.todoapp.model.Project;
 import io.github.pmat.todoapp.model.ProjectStep;
 import io.github.pmat.todoapp.model.projection.ProjectWriteModel;
 import io.github.pmat.todoapp.service.ProjectService;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/projects")
@@ -38,5 +41,10 @@ public class ProjectController {
         model.addAttribute("project", new ProjectWriteModel());
         model.addAttribute("message", "Project added");
         return "projects";
+    }
+
+    @ModelAttribute("projects")
+    public List<Project> getProjects(){
+        return service.readAll();
     }
 }
