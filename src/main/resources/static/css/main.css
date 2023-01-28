@@ -2,9 +2,18 @@
     border: solid 1px white;
 }
 
+.Bdc\(red\){
+    border-color: red !important;
+}
+
 .P\(0\){
     padding: 0;
 }
 
 .P\(10px\){
     padding: 10px;
+}
+
+.C\(red\){
+    color: red;
+}
