@@ -37,3 +37,4 @@ logs/
 
 ### db file ###
 src/main/resources/db/task-db.mv.db
+src/main/resources/db/task-db.trace.db
