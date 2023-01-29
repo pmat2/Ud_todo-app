@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-@RequestMapping("/projects")
+@RequestMapping("/project")
 public class ProjectController {
 
     public static final Logger logger = LoggerFactory.getLogger(ProjectController.class);

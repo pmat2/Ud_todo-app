@@ -74,7 +74,7 @@ public class TaskController {
     }
 
     @Transactional
-    @PatchMapping("/toggle/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<?> toggleTask(@PathVariable Integer id){
         if(!taskRepository.existsById(id)){
             logger.error("[toggleTask] invoked, for id: {}, task with that id not found in database", id);
