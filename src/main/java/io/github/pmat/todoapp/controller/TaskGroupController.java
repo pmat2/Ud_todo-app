@@ -24,6 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/group")
+@IllegalExceptionProcessing
 public class TaskGroupController {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskGroupController.class);
@@ -99,6 +100,4 @@ public class TaskGroupController {
     public List<GroupReadModel> getGroups() {
         return service.readAll();
     }
-
-
 }
