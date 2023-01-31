@@ -20,4 +20,12 @@ public class Audit {
     public void preUpdate(){
         updatedOn = LocalDateTime.now();
     }
+
+    @Override
+    public String toString() {
+        return "Audit{" +
+                "createdOn=" + createdOn +
+                ", updatedOn=" + updatedOn +
+                '}';
+    }
 }

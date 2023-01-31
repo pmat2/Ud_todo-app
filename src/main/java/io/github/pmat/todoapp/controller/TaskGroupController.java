@@ -100,15 +100,5 @@ public class TaskGroupController {
         return service.readAll();
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    ResponseEntity<String> handleIAE(IllegalArgumentException exception) {
-        logger.info("[handleIAE] - caught IllegalArgumentException");
-        return ResponseEntity.notFound().build();
-    }
 
-    @ExceptionHandler(IllegalStateException.class)
-    ResponseEntity<String> handleISE(IllegalStateException exception) {
-        logger.info("[handleISE] - caught IllegalStateException");
-        return ResponseEntity.badRequest().body(exception.getMessage());
-    }
 }

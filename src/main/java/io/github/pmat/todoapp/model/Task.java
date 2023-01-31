@@ -59,4 +59,16 @@ public class Task {
         deadline = source.deadline;
         group = source.group;
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", done=" + done +
+                ", deadline=" + deadline +
+                ", audit=" + audit +
+                ", group=" + group +
+                '}';
+    }
 }

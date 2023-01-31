@@ -1,6 +1,5 @@
 package io.github.pmat.todoapp.config;
 
-import io.github.pmat.todoapp.controller.LoggerInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
