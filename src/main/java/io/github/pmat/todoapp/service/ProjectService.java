@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 //@Service - used LogicConfiguration.class instead
 public class ProjectService {
-
     private ProjectRepository repository;
     private TaskGroupRepository taskGroupRepository;
     private TaskConfigurationProperties configurationProperties;
