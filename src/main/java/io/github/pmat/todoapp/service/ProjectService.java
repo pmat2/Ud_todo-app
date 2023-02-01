@@ -27,7 +27,6 @@ public class ProjectService {
         this.taskGroupRepository = taskGroupRepository;
         this.configurationProperties = configurationProperties;
         this.taskGroupService = taskGroupService;
-
     }
 
     public List<Project> readAll() {

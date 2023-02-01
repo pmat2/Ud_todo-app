@@ -4,6 +4,7 @@ import io.github.pmat.todoapp.model.Project;
 import io.github.pmat.todoapp.model.ProjectStep;
 import io.github.pmat.todoapp.model.projection.ProjectWriteModel;
 import io.github.pmat.todoapp.service.ProjectService;
+import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,6 +59,7 @@ public class ProjectController {
         return "projects";
     }
 
+    @Timed(value = "project.create.group", histogram = true, percentiles = {0.5, 0.95, 0.99})
     @PostMapping("/{id}")
     String createGroup(@ModelAttribute("project") ProjectWriteModel current,
                        Model model,

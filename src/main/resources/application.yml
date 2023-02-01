@@ -7,6 +7,10 @@ management:
     web:
       base-path: /status
 
+  metrics:
+    enable:
+      http: false
+
 spring:
   resources:
-    add-mappings=true:
+    add-mappings: true
