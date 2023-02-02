@@ -5,6 +5,7 @@ import io.github.pmat.todoapp.repository.TaskRepository;
 import io.github.pmat.todoapp.service.TaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,17 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/task")
 public class TaskController {
 
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    private final ApplicationEventPublisher publisher;
     private final TaskRepository taskRepository;
     private final TaskService taskService;
 
-    public TaskController(TaskRepository taskRepository, TaskService taskService) {
+    public TaskController(ApplicationEventPublisher publisher, TaskRepository taskRepository, TaskService taskService) {
+        this.publisher = publisher;
         this.taskRepository = taskRepository;
         this.taskService = taskService;
     }
@@ -81,8 +83,9 @@ public class TaskController {
             return ResponseEntity.notFound().build();
         }
         taskRepository.findById(id)
-                .ifPresent(task -> task.setDone(!task.isDone()));
-        logger.info("[updateTask] invoked for id: {}, toggled done to: {}", id, taskRepository.findById(id).orElse(null).isDone());
+                .map(Task::toggle)
+                .ifPresent(publisher::publishEvent);
+        logger.info("[updateTask] invoked for id: {}, toggled done", id);
         return ResponseEntity.noContent().build();
     }
 

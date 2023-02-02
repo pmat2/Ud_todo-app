@@ -1,5 +1,7 @@
 package io.github.pmat.todoapp.model;
 
+import io.github.pmat.todoapp.event.TaskEvent;
+
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,16 +44,46 @@ public class Task {
         }
     }
 
-    public int getId() { return id; }
-    void setId(final int id) { this.id = id; }
-    public String getDescription() { return description; }
-    void setDescription(final String description) { this.description = description; }
-    public boolean isDone() { return done; }
-    public void setDone(final boolean done) { this.done = done; }
-    public LocalDateTime getDeadline() { return deadline; }
-    void setDeadline(final LocalDateTime deadline) { this.deadline = deadline; }
-    TaskGroup getGroup() { return group; }
-    void setGroup(final TaskGroup group) { this.group = group; }
+    public int getId() {
+        return id;
+    }
+
+    void setId(final int id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public TaskEvent toggle() {
+        this.done = !this.done;
+        return TaskEvent.changed(this);
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    void setDeadline(final LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    TaskGroup getGroup() {
+        return group;
+    }
+
+    void setGroup(final TaskGroup group) {
+        this.group = group;
+    }
 
     public void updateFrom(final Task source) {
         description = source.description;
